@@ -16,32 +16,28 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#ifndef GFX_POSTPROCESSOR_HPP
+#define GFX_POSTPROCESSOR_HPP
 
-#include <string>
 #include "rpi_gfx.hpp"
+#include "gfx_shader.hpp"
+#include "gfx_texture_2D.hpp"
+#include <string>
+#include <vector>
 
-class Config
-{
-public:
-    Config(int argc, char* argv[]);
-
-    std::string fsName;
-    std::string ppName;
-    int w, h;
-    int x, y;
-    float stretch;
-
-    std::string inames[4];
-    unsigned short imgs;
-
-    bool devmode;
-    bool prepend;
-    bool fpsCounter;
-    bool swInterval0;
-    bool clearPp;
-    unsigned short fpsIn;
+class GfxPostProcessor {
+    public:
+        GfxPostProcessor(unsigned int w, unsigned int h, float* it, std::string vs);
+        ~GfxPostProcessor();
+        void draw();
+        void bindFramebuffer();
+    private:
+        GfxTexture2D* iChannel0;
+        GfxShader shaderProgram;
+        float* t;
+        GLfloat vertices[8];
+        GLuint frameBuffer;
+        GLuint renderBuffer;
 };
 
 #endif

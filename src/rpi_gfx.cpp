@@ -32,3 +32,7 @@ void check()
         exit(error);
     }
 }
+
+void gfxBindFB0() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}

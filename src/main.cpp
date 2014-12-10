@@ -25,6 +25,7 @@ This file is part of esfragt.
 #include "gfx_EGL_window.hpp"
 #include "gfx_shader.hpp"
 #include "gfx_texture_2D.hpp"
+#include "gfx_postprocessor.hpp"
 #include "util.hpp"
 #include "config.hpp"
 #include "text.hpp"
@@ -35,43 +36,44 @@ This file is part of esfragt.
  *  2 - Failed to create window
  */
 
-using namespace std;
-
 int main(int argc, char *argv[])
 {
+    bcm_host_init();
     Config c(argc, argv);
     GfxEGLWindow window(&c);
     if(!window.createWindow(GFX_WINDOW_RGB))
         exit(2);
-
+    std::cout << "Compiling primary shader...\n";
     std::string* fsTemp = new std::string;
     if (c.prepend)
         *fsTemp = UNIFORMS;
     if (!loadFile(c.fsName, *fsTemp))
         exit(40);
     GfxShader shaderProgram;
-    if(shaderProgram.compProgram("attribute vec4 v;\nvoid main(){gl_Position=v;}\n", *fsTemp) == GL_FALSE)
+    if(shaderProgram.compProgram(SIMPLE_VS, *fsTemp) == GL_FALSE)
         exit(1);
     delete fsTemp;
 
-    glReleaseShaderCompiler();
     glUseProgram(shaderProgram.getHandle());
 
     TGAFile* image;
+    std::vector<GfxTexture2D*> textures;
     for (unsigned short counter = 0; counter < c.imgs; counter++)
     {
         std::cout << "Image " << counter << ": " << c.inames[counter] << std::endl;
         image = new TGAFile;
         image->load(c.inames[counter]);
-        glActiveTexture(GL_TEXTURE0+counter);
-        gfxLoadTexture2D(image->getImage(), image->getWidth(), image->getHeight(), ((image->getBpp() == 32) ? GL_RGBA : GL_RGB));
+        textures.push_back(new GfxTexture2D(image->getImage(), image->getWidth(), image->getHeight(), counter, ((image->getBpp() == 32) ? GL_RGBA : GL_RGB)));
         delete image;
     }
     glUniform1i(shaderProgram.getUfmHandle("iChannel0"), 0);
     glUniform1i(shaderProgram.getUfmHandle("iChannel1"), 1);
     glUniform1i(shaderProgram.getUfmHandle("iChannel2"), 2);
     glUniform1i(shaderProgram.getUfmHandle("iChannel3"), 3);
-
+    glUniform1i(shaderProgram.getUfmHandle("iChannel4"), 4);
+    glUniform1i(shaderProgram.getUfmHandle("iChannel5"), 5);
+    glUniform1i(shaderProgram.getUfmHandle("iChannel6"), 6);
+    glUniform1i(shaderProgram.getUfmHandle("iChannel7"), 7);
     check();
 
     glEnable(GL_BLEND);
@@ -111,27 +113,51 @@ int main(int argc, char *argv[])
     gettimeofday(&tTmp, &tz);
     gettimeofday(&startT, &tz);
 
+    GfxPostProcessor* pp = NULL;
+    if (c.ppName != "") {
+        std::cout << "Compiling post processor shader...\n";
+        pp = new GfxPostProcessor(c.w, c.h, &t, c.ppName);
+    }
+
+    glReleaseShaderCompiler();
+
     for (;;)
     {
         check();
-
+        
+        glUseProgram(shaderProgram.getHandle());
+        if (pp) {
+            pp->bindFramebuffer();
+            if (c.clearPp)
+                glClear(GL_COLOR_BUFFER_BIT);
+        }
         gettimeofday(&tTmp, &tz);
         t = static_cast<float>(tTmp.tv_sec - startT.tv_sec + ((tTmp.tv_usec - startT.tv_usec) * 1e-6));
         glUniform1f(shaderProgram.getUfmHandle("iGlobalTime"), t);
 
+        for (int n=0; n<c.imgs; n++) {
+            textures[n]->bindToOwnUnit();
+        }
+        
         glVertexAttribPointer(shaderProgram.getAtrHandle("v"), 3, GL_FLOAT, GL_FALSE, 0, rectangle);
         glEnableVertexAttribArray(shaderProgram.getAtrHandle("v"));
 
         glDrawArrays(GL_TRIANGLES, 0, 3*2);
-
+        if (pp) {
+            gfxBindFB0();
+            pp->draw();
+        }
         window.swapBuffers();
+
+        if (pp)
+            glClear(GL_COLOR_BUFFER_BIT);
 
         if (c.fpsCounter)
         {
             frames++;
             if (frames > c.fpsIn)
             {
-                cout << "FPS=" << (c.fpsIn / (t - fpsLastT)) << endl;
+                std::cout << "FPS=" << (c.fpsIn / (t - fpsLastT)) << std::endl;
                 fpsLastT = t;
                 frames = 0;
             }

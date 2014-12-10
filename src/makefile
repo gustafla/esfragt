@@ -18,7 +18,7 @@
 
 # A makefile to build esfragt.
 
-SRCS = rpi_gfx.cpp main.cpp util.cpp config.cpp text.cpp gfx_EGL_window.cpp gfx_shader.cpp gfx_texture_2D.cpp tga_file.cpp
+SRCS = rpi_gfx.cpp main.cpp util.cpp config.cpp text.cpp gfx_EGL_window.cpp gfx_shader.cpp gfx_texture_2D.cpp tga_file.cpp gfx_postprocessor.cpp
 TARGET = ../esfragt
 OBJS = $(SRCS:.cpp=.o)
 CFLAGS += -O3 -fomit-frame-pointer

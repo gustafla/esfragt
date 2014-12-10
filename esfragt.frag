@@ -60,6 +60,6 @@ void main()
     vec3 cam = vec3(0.0, 0.0, -3.0);
     float lum = 0.8 / sqrt(march(ray, cam)) * mod(gl_FragCoord.y, 2.0);
     float noise = (rand(uv + iGlobalTime) * 0.034);
-    gl_FragColor = vec4((lum * lum + noise), (lum + noise), (lum * 0.8 + noise), 0.1);     //Cyan
+    gl_FragColor = vec4((lum * lum + noise), (lum + noise), (lum * 0.8 + noise), 0.4);     //Cyan
 //    vec3 rgbCol = vec3(lum + noise); gl_FragColor = vec4(rgbCol, 1.0);                     //B&W
 }

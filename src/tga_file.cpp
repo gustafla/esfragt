@@ -52,7 +52,8 @@ bool TGAFile::load(std::string filename)
         return false;
     }
 
-    imageData = (unsigned char*)malloc(imageSize);
+    //imageData = (unsigned char*)malloc(imageSize);
+    imageData = new unsigned char[imageSize];
     if (imageData == NULL)
     {
         errorPrint(filename);
@@ -201,5 +202,5 @@ bool TGAFile::loadCompressed()
 
 TGAFile::~TGAFile()
 {
-    delete imageData;
+    delete[] imageData;
 }

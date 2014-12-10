@@ -27,15 +27,20 @@ Config::Config(int argc, char* argv[]):
 fsName("esfragt.frag"),
 w(256),
 h(256),
+x(0),
+y(0),
 stretch(1),
 devmode(false),
 prepend(false),
 fpsCounter(false),
+swInterval0(false),
+clearPp(true),
+ppName(""),
 fpsIn(100),
 imgs(0)
 {
     /*YAY crappy parameter checking ^__^*/
-    bool gotName = false;
+    bool gotName = false, useAuto = false;
     for (int n=1; n<argc; n++)
     {
         if (!strcmp(argv[n], "-w"))
@@ -50,80 +55,125 @@ imgs(0)
                 checkValueParam(n, argc, argv);
                 h = atoi(argv[n]);
             }
-                else if (!strcmp(argv[n], "-s"))
+                else if (!strcmp(argv[n], "-x"))
                 {
                     n++;
                     checkValueParam(n, argc, argv);
-                    w = h = atoi(argv[n]);
+                    x = atoi(argv[n]);
                 }
-                    else if (!strcmp(argv[n], "--help"))
+                    else if (!strcmp(argv[n], "-y"))
                     {
-                        std::cout << DOC;
-                        exit(0);
+                        n++;
+                        checkValueParam(n, argc, argv);
+                        y = atoi(argv[n]);
                     }
-                        else if (!strcmp(argv[n], "--version"))
+                        else if (!strcmp(argv[n], "-s"))
                         {
-                            std::cout << VERSION;
-                            exit(0);
+                            n++;
+                            checkValueParam(n, argc, argv);
+                            w = h = atoi(argv[n]);
                         }
-                            else if (!strcmp(argv[n], "-f"))
+                            else if (!strcmp(argv[n], "--help"))
                             {
-                                fpsCounter = true;
-                                if ((n+1)!=argc)
-                                {
-                                    std::string tmp = argv[n+1];
-                                    if (isdigits(tmp))
-                                    {
-                                        n++;
-                                        fpsIn = atoi(argv[n]);
-                                    }
-                                }
+                                std::cout << DOC;
+                                exit(0);
                             }
-                                else if (!strcmp(argv[n], "-d"))
+                                else if (!strcmp(argv[n], "--version"))
                                 {
-                                    devmode = true;
+                                    std::cout << VERSION;
+                                    exit(0);
                                 }
-                                    else if (!strcmp(argv[n], "-u"))
+                                    else if (!strcmp(argv[n], "-f"))
                                     {
-                                        prepend = true;
-                                    }
-                                        else if (!strcmp(argv[n], "-c"))
+                                        fpsCounter = true;
+                                        if ((n+1)!=argc)
                                         {
-                                            n++;
-                                            checkValueParamf(n, argc, argv);
-                                            stretch = atof(argv[n]);
-                                            if (stretch < 1)
+                                            std::string tmp = argv[n+1];
+                                            if (isdigits(tmp))
                                             {
-                                                std::cout << ARGERR;
-                                                exit(4);
+                                                n++;
+                                                fpsIn = atoi(argv[n]);
                                             }
                                         }
-                                            else if (!strcmp(argv[n], "-i"))
+                                    }
+                                        else if (!strcmp(argv[n], "-d"))
+                                        {
+                                            devmode = true;
+                                        }
+                                            else if (!strcmp(argv[n], "-u"))
                                             {
-                                                if (imgs >= 4)
-                                                {
-                                                    std::cout << "Too many images\n" << ARGERR;
-                                                    exit(6);
-                                                }
-                                                n++;
-                                                if (n==argc)
-                                                {
-                                                    std::cout << ARGERR;
-                                                    exit(20);
-                                                }
-                                                inames[imgs]=argv[n];
-                                                imgs++;
+                                                prepend = true;
                                             }
-                                                else if (!gotName)
+                                                else if (!strcmp(argv[n], "-c"))
                                                 {
-                                                    fsName = argv[n];
-                                                    gotName = true;
-                                                }
-                                                    else
+                                                    n++;
+                                                    checkValueParamf(n, argc, argv);
+                                                    stretch = atof(argv[n]);
+                                                    if (stretch < 1)
                                                     {
                                                         std::cout << ARGERR;
-                                                        exit(5);
+                                                        exit(4);
                                                     }
+                                                }
+                                                    else if (!strcmp(argv[n], "-i"))
+                                                    {
+                                                        if (imgs >= 8)
+                                                        {
+                                                            std::cout << "Too many images\n" << ARGERR;
+                                                            exit(6);
+                                                        }
+                                                        n++;
+                                                        if (n==argc)
+                                                        {
+                                                            std::cout << ARGERR;
+                                                            exit(20);
+                                                        }
+                                                        inames[imgs]=argv[n];
+                                                        imgs++;
+                                                    }
+                                                        else if (!strcmp(argv[n], "-a"))
+                                                        {
+                                                            useAuto = true;
+                                                        }
+                                                            else if (!strcmp(argv[n], "-v"))
+                                                            {
+                                                                swInterval0 = true;
+                                                            }
+                                                                else if (!strcmp(argv[n], "-p"))
+                                                                {
+                                                                    n++;
+                                                                    if (n==argc)
+                                                                    {
+                                                                        std::cout << ARGERR;
+                                                                        exit(23);
+                                                                    }
+                                                                    ppName=argv[n];
+                                                                }
+                                                                    else if (!strcmp(argv[n], "-m"))
+                                                                    {
+                                                                        clearPp = false;
+                                                                    }
+                                                                        else if (!gotName)
+                                                                        {
+                                                                            fsName = argv[n];
+                                                                            gotName = true;
+                                                                        }
+                                                                            else
+                                                                            {
+                                                                                std::cout << "Unexpected parameter " << argv[n] << std::endl;
+                                                                                std::cout << ARGERR;
+                                                                                exit(5);
+                                                                            }
+    }
+    if (useAuto) {
+        int errDisp;
+        uint32_t actualW, actualH;
+        if ((errDisp = graphics_get_display_size(0, &actualW, &actualH)) < 0) {
+            std::cout << "Failed to get display size.\n";
+            exit(errDisp);
+        }
+        w = actualW;
+        h = actualH;
     }
 
     h /= stretch;

@@ -31,8 +31,6 @@ void GfxEGLWindow::swapBuffers()
 
 bool GfxEGLWindow::createWindow(GLuint flags)
 {
-    bcm_host_init();
-
     EGLint attribList[] =
     {
         EGL_RED_SIZE,       5,
@@ -59,20 +57,21 @@ bool GfxEGLWindow::createWindow(GLuint flags)
 
     uint32_t w;
     uint32_t h;
-
-    if (graphics_get_display_size(0 /*LCD*/, &w, &h) < 0)
-        return false;
+    uint32_t x;
+    uint32_t y;
 
     w = c->w;
     h = c->h;
+    x = c->x;
+    y = c->y;
 
-    dst_rect.x = 0;
-    dst_rect.y = 0;
+    dst_rect.x = x;
+    dst_rect.y = y;
     dst_rect.width = w * c->stretch;
     dst_rect.height = h * c->stretch;
 
-    src_rect.x = 0;
-    src_rect.y = 0;
+    src_rect.x = x;
+    src_rect.y = y;
     src_rect.width = w << 16;
     src_rect.height = h << 16;
 
@@ -133,6 +132,9 @@ bool GfxEGLWindow::createWindow(GLuint flags)
     display = eglDisplay;
     buffer = eglBuffer;
     context = eglContext;
+    
+    if (c->swInterval0)
+        eglSwapInterval(eglDisplay, 0);
 
     return true;
 }

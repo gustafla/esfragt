@@ -27,6 +27,7 @@ This file is part of esfragt.
 #include "EGL/egl.h"
 #include "EGL/eglext.h"
 #include "GLES2/gl2.h"
+#include "GLES2/gl2ext.h"
 
 #ifndef RPI_GFX_HPP
 #define RPI_GFX_HPP
@@ -43,5 +44,6 @@ This file is part of esfragt.
 #define GFX_WINDOW_MULTISAMPLE 8
 
 void check();
+void gfxBindFB0();
 
 #endif

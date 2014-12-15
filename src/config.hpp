@@ -42,6 +42,7 @@ public:
     bool swInterval0;
     bool clearPp;
     unsigned short fpsIn;
+    float resetTime;
 };
 
 #endif

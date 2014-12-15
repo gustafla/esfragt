@@ -37,6 +37,7 @@ swInterval0(false),
 clearPp(true),
 ppName(""),
 fpsIn(100),
+resetTime(0.0),
 imgs(0)
 {
     /*YAY crappy parameter checking ^__^*/
@@ -153,6 +154,19 @@ imgs(0)
                                                                     {
                                                                         clearPp = false;
                                                                     }
+                                                                        else if (!strcmp(argv[n], "-r"))
+                                                                        {
+                                                                            resetTime = 3600.0;
+                                                                            if ((n+1)!=argc)
+                                                                            {
+                                                                                std::string tmp = argv[n+1];
+                                                                                if (isfloat(tmp))
+                                                                                {
+                                                                                    n++;
+                                                                                    resetTime = atof(argv[n]);
+                                                                                }
+                                                                            }
+                                                                        }
                                                                         else if (!gotName)
                                                                         {
                                                                             fsName = argv[n];

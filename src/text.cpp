@@ -30,7 +30,7 @@ const std::string UNIFORMS = "uniform vec2 iResolution; "
                              "uniform sampler2D iChannel6; "
                              "uniform sampler2D iChannel7; ";
 
-const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 1.9\n"
+const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 1.9.2\n"
                             "Copyright 2014 Lauri Gustafsson.\n\n"
                             
                             "esfragt is free software: you can redistribute it and/or modify\n"
@@ -74,6 +74,8 @@ const std::string DOC = "Usage: esfragt [OPTION]... FILE\n"
                         "                    post processor shader return just opaque pixels to be sure)\n"
                         "  -m                disable post processor color clearing, gives a \"blurry\" feedback\n"
                         "                    if primary shader returns transparent pixels.\n"
+                        "  -r                Reset iGlobalTime when it reaches n seconds\n"
+                        "                    (default 3600)\n"
                         "      --help        display this help and exit\n"
                         "      --version     display version information and exit\n"
                         "\n"

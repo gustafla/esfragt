@@ -135,6 +135,12 @@ int main(int argc, char *argv[])
         t = static_cast<float>(tTmp.tv_sec - startT.tv_sec + ((tTmp.tv_usec - startT.tv_usec) * 1e-6));
         glUniform1f(shaderProgram.getUfmHandle("iGlobalTime"), t);
 
+        if (c.resetTime > 0.01) {
+            if (t>c.resetTime) {
+                gettimeofday(&startT, &tz);
+            }
+        }
+
         for (int n=0; n<c.imgs; n++) {
             textures[n]->bindToOwnUnit();
         }

@@ -6,13 +6,14 @@ See --help for help.
 --version for other info.
 
 To build:
-    $ cd src
     $ make
+    $ sudo make install (optional, copies esfragt to /usr/local/bin)
     And do what you want with the binary.
 
 Copyright 2014 Lauri Gustafsson.
-Released under GNU GPLv3+, see COPYING.
+Released GNU GPLv3+, see COPYING.
 
 <http://luutifa.tk/esfragt/>
+<https://github.com/luutifa/esfragt>
 
-In case of my code being shit or something: luutifa@gmail.com
+In case of anything: luutifa@gmail.com

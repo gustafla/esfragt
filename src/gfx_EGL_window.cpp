@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -24,7 +24,7 @@ c(ic)
 
 }
 
-#ifndef ODROID
+#ifndef USE_X
 void GfxEGLWindow::swapBuffers()
 {
     eglSwapBuffers(display, buffer);
@@ -207,7 +207,7 @@ bool GfxEGLWindow::createWindow(GLuint flags)
 
     // make the window visible on the screen
     XMapWindow (x_display, win);
-    XStoreName (x_display, win, "esfragt test"); //WIN NAME
+    XStoreName (x_display, win, "esfragt"); //WIN NAME
 
     // get identifiers for the provided atom name strings
     wm_state = XInternAtom (x_display, "_NET_WM_STATE", FALSE);

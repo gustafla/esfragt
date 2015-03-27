@@ -1,4 +1,4 @@
-# Copyright 2014 Lauri Gustafsson
+# Copyright 2014, 2015 Lauri Gustafsson
 #
 # This file is part of esfragt.
 #
@@ -20,17 +20,17 @@
 
 SRCS=rpi_gfx.cpp main.cpp util.cpp config.cpp text.cpp gfx_EGL_window.cpp gfx_shader.cpp gfx_texture_2D.cpp tga_file.cpp gfx_postprocessor.cpp
 TARGET=../esfragt
-odroid:TARGET=../esfragt.armv7
+xwin:TARGET=../esfragt.xwin
 OBJS=$(SRCS:.cpp=.o)
-CFLAGS+=-O3 -fomit-frame-pointer
-odroid:CFLAGS=-O3 -fomit-frame-pointer -DODROID
+CFLAGS+=-O3 -fomit-frame-pointer -MMD -MP
+xwin:CFLAGS=-O3 -fomit-frame-pointer -DUSE_X -MMD -MP
 debug:CFLAGS=-g
 INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
-odroid:INCLUDES=
+xwin:INCLUDES=
 LFLAGS=-L/opt/vc/lib/ -L/opt/vc/src/hello_pi/lib/ilclient -L/opt/vc/src/hello_pi/lib/vgfont
-odroid:LFLAGS=
+xwin:LFLAGS=
 LIBS=-lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt
-odroid:LIBS=-lGLESv2 -lEGL -lpthread -lX11
+xwin:LIBS=-lGLESv2 -lEGL -lpthread -lX11
 LIBS_CUSTOM =
 CC=g++
 
@@ -38,7 +38,7 @@ all: $(TARGET)
 	@echo "Finished."
 	strip --strip-all $(TARGET)
 	
-odroid: $(TARGET)
+xwin: $(TARGET)
 	@echo "Finished."
 	strip --strip-all $(TARGET)
 
@@ -52,7 +52,11 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f *.o *~ $(TARGET)
+	rm -f *.o *.d *~ $(TARGET)
+	rm -f $(TARGET).xwin
 
 install: $(TARGET)
 	cp $(TARGET) /usr/local/bin/
+
+
+-include *.d

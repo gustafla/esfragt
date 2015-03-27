@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -23,7 +23,7 @@ This file is part of esfragt.
 #include <iostream>
 #include <stdarg.h>
 #include <sys/time.h>
-#ifndef ODROID
+#ifndef USE_X
     #include "bcm_host.h"
 #endif
 #include "EGL/egl.h"

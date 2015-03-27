@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -18,50 +18,20 @@ This file is part of esfragt.
 
 precision highp float;
 
-#define MARCH_PREC 16
-
 uniform float iGlobalTime;
 uniform vec2 iResolution;
 
-float rand(vec2 co){
-    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
-float pallo(vec3 pos, vec3 coord, float r){
-    return length(pos - coord) - r;
-}
-
-float scene(vec3 pos){
-    return min(
-        pallo(pos, vec3(0.0, 0.0, (sin(iGlobalTime / 2.0) * 1.5 + 2.0)), 0.8),
-        min(
-            pallo(pos, vec3((cos(iGlobalTime / 1.1) * 1.8), (sin(iGlobalTime / 1.1) * 1.8), 1.5), 0.5),
-            min(
-                pallo(pos, vec3((sin(iGlobalTime / 1.4) * 0.6), (cos(iGlobalTime / 1.4) * 1.2), (sin(iGlobalTime / 1.6) * 1.8 + 1.5)), 0.2),
-                pallo(pos, vec3((cos(iGlobalTime / 1.4) * 0.6), (sin(iGlobalTime / 1.4) * 1.2), (cos(iGlobalTime / 1.6) * 1.8 + 1.5)), 0.2)
-            )
-        )
-    );
-}
-
-float march(vec3 dir, vec3 cam){
-    vec3 curPos = cam;
-    for(int i=0; i<MARCH_PREC; i++){
-        float dist = scene(curPos);
-        curPos += dist * dir;
-    }
-    return length(curPos - cam);
-}
-
 void main()
 {
+    vec2 uv = gl_FragCoord.xy / iResolution.yy - vec2((iResolution.x/iResolution.y)*0.5, 0.5);
+    
+    float t = 1.0/sqrt(uv.x*uv.x + uv.y*uv.y);
+    float u = atan(uv.y, uv.x)+(iGlobalTime*0.2);
+    float v = t+(iGlobalTime*1.6);
+    
+    vec3 col1 = vec3(1.0, 1.0, 1.0);
+    vec3 col2 = vec3(1.0, 0.1, 0.1);
+    float l = clamp(((sin(u*8.0) * sin(v*8.0))*1000.0), 0.0, 1.0);
 
-    float t = iGlobalTime;
-    vec2 uv = (gl_FragCoord.xy / iResolution.yy - vec2(0.5, 0.5));
-    vec3 ray = normalize(vec3(uv.x, uv.y, 1.0));
-    vec3 cam = vec3(0.0, 0.0, -3.0);
-    float lum = 0.8 / sqrt(march(ray, cam)) * mod(gl_FragCoord.y, 2.0);
-    float noise = (rand(uv + iGlobalTime) * 0.034);
-    gl_FragColor = vec4((lum * lum + noise), (lum + noise), (lum * 0.8 + noise), 0.4);     //Cyan
-//    vec3 rgbCol = vec3(lum + noise); gl_FragColor = vec4(rgbCol, 1.0);                     //B&W
+    gl_FragColor = vec4((col2*l+(col1*(1.0-l))), 0.33);
 }

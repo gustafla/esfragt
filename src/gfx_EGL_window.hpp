@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -19,7 +19,7 @@ This file is part of esfragt.
 #ifndef GFX_EGL_WINDOW_HPP
 #define GFX_EGL_WINDOW_HPP
 
-#ifndef ODROID
+#ifndef USE_X
 #include "config.hpp"
 #include "rpi_gfx.hpp"
 #include <string>

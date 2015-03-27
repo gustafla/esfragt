@@ -1,6 +1,6 @@
 **esfragt**
 
-A GLSL shader tool/platform for Raspberry Pi.
+A GLSL shader platform for Raspberry Pi and other GL ES 2.0 devices.
 
 See --help for help.  
 --version for other info.
@@ -10,7 +10,12 @@ To build:
     $ sudo make install (optional, copies esfragt to /usr/local/bin)  
     And do what you want with the binary.  
 
-Copyright 2014 Lauri Gustafsson.  
+**OR**  
+if you have a device that doesn't have dispmanx and uses X instead,  
+    $ make xwin  
+    # cp esfragt.xwin /usr/local/bin/esfragt
+
+Copyright 2014, 2015 Lauri Gustafsson.  
 Released GNU GPLv3+, see COPYING.
 
 <http://luutifa.tk/esfragt/>  

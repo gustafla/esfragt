@@ -1,4 +1,4 @@
-# Copyright 2014 Lauri Gustafsson
+# Copyright 2014, 2015 Lauri Gustafsson
 #
 # This file is part of esfragt.
 #
@@ -19,8 +19,8 @@
 default:
 	cd src; make
 
-odroid:
-	cd src; make odroid
+xwin:
+	cd src; make xwin
 
 clean:
 	cd src; make clean

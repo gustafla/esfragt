@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 

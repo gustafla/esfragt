@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -38,7 +38,7 @@ This file is part of esfragt.
 
 int main(int argc, char *argv[])
 {
-    #ifndef ODROID
+    #ifndef USE_X
         bcm_host_init();
     #endif
     Config c(argc, argv);

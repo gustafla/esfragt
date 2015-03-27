@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -180,7 +180,7 @@ imgs(0)
                                                                             }
     }
     if (useAuto) {
-        #ifndef ODROID
+        #ifndef USE_X
             int errDisp;
             uint32_t actualW, actualH;
             if ((errDisp = graphics_get_display_size(0, &actualW, &actualH)) < 0) {

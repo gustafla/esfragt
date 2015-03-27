@@ -1,4 +1,4 @@
-// Copyright 2014 Lauri Gustafsson
+// Copyright 2014, 2015 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -30,8 +30,8 @@ const std::string UNIFORMS = "uniform vec2 iResolution; "
                              "uniform sampler2D iChannel6; "
                              "uniform sampler2D iChannel7; ";
 
-const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 1.9.2\n"
-                            "Copyright 2014 Lauri Gustafsson.\n\n"
+const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 2.0\n"
+                            "Copyright 2014, 2015 Lauri Gustafsson.\n\n"
                             
                             "esfragt is free software: you can redistribute it and/or modify\n"
                             "it under the terms of the GNU General Public License as published by\n"

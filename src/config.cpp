@@ -180,14 +180,18 @@ imgs(0)
                                                                             }
     }
     if (useAuto) {
-        int errDisp;
-        uint32_t actualW, actualH;
-        if ((errDisp = graphics_get_display_size(0, &actualW, &actualH)) < 0) {
-            std::cout << "Failed to get display size.\n";
-            exit(errDisp);
-        }
-        w = actualW;
-        h = actualH;
+        #ifndef ODROID
+            int errDisp;
+            uint32_t actualW, actualH;
+            if ((errDisp = graphics_get_display_size(0, &actualW, &actualH)) < 0) {
+                std::cout << "Failed to get display size.\n";
+                exit(errDisp);
+            }
+            w = actualW;
+            h = actualH;
+        #endif
+        w = 640;
+        h = 480;
     }
 
     h /= stretch;

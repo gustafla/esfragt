@@ -21,6 +21,7 @@ This file is part of esfragt.
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "text.hpp"
 
 using namespace std;

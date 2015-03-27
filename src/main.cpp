@@ -38,7 +38,9 @@ This file is part of esfragt.
 
 int main(int argc, char *argv[])
 {
-    bcm_host_init();
+    #ifndef ODROID
+        bcm_host_init();
+    #endif
     Config c(argc, argv);
     GfxEGLWindow window(&c);
     if(!window.createWindow(GFX_WINDOW_RGB))

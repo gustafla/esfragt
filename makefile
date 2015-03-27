@@ -19,6 +19,9 @@
 default:
 	cd src; make
 
+odroid:
+	cd src; make odroid
+
 clean:
 	cd src; make clean
 

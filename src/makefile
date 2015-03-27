@@ -18,18 +18,27 @@
 
 # A makefile to build esfragt.
 
-SRCS = rpi_gfx.cpp main.cpp util.cpp config.cpp text.cpp gfx_EGL_window.cpp gfx_shader.cpp gfx_texture_2D.cpp tga_file.cpp gfx_postprocessor.cpp
-TARGET = ../esfragt
-OBJS = $(SRCS:.cpp=.o)
-CFLAGS += -O3 -fomit-frame-pointer
-debug: CFLAGS = -g
-INCLUDES += -I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
-LFLAGS = -L/opt/vc/lib/ -L/opt/vc/src/hello_pi/lib/ilclient -L/opt/vc/src/hello_pi/lib/vgfont
-LIBS = -lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt
+SRCS=rpi_gfx.cpp main.cpp util.cpp config.cpp text.cpp gfx_EGL_window.cpp gfx_shader.cpp gfx_texture_2D.cpp tga_file.cpp gfx_postprocessor.cpp
+TARGET=../esfragt
+odroid:TARGET=../esfragt.armv7
+OBJS=$(SRCS:.cpp=.o)
+CFLAGS+=-O3 -fomit-frame-pointer
+odroid:CFLAGS=-O3 -fomit-frame-pointer -DODROID
+debug:CFLAGS=-g
+INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
+odroid:INCLUDES=
+LFLAGS=-L/opt/vc/lib/ -L/opt/vc/src/hello_pi/lib/ilclient -L/opt/vc/src/hello_pi/lib/vgfont
+odroid:LFLAGS=
+LIBS=-lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt
+odroid:LIBS=-lGLESv2 -lEGL -lpthread -lX11
 LIBS_CUSTOM =
-CC = g++
+CC=g++
 
 all: $(TARGET)
+	@echo "Finished."
+	strip --strip-all $(TARGET)
+	
+odroid: $(TARGET)
 	@echo "Finished."
 	strip --strip-all $(TARGET)
 

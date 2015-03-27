@@ -19,6 +19,7 @@ This file is part of esfragt.
 #ifndef GFX_EGL_WINDOW_HPP
 #define GFX_EGL_WINDOW_HPP
 
+#ifndef ODROID
 #include "config.hpp"
 #include "rpi_gfx.hpp"
 #include <string>
@@ -38,5 +39,37 @@ protected:
     EGLContext context;
     EGLSurface buffer;
 };
+#else
 
+#include "config.hpp"
+#include "rpi_gfx.hpp"
+#include <string>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+#include <cstring>
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+class GfxEGLWindow
+{
+public:
+    GfxEGLWindow(Config* ic);
+    void swapBuffers();
+    bool createWindow(GLuint flags);
+
+protected:
+
+    Config* c;
+    EGLNativeWindowType window;
+    EGLDisplay display;
+    EGLContext context;
+    EGLSurface surface;
+};
+#endif
 #endif

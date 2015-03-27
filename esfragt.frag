@@ -16,20 +16,20 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define MARCH_PREC 8
+#define MARCH_PREC 32
 
-uniform float iGlobalTime;
-uniform vec2 iResolution;
+uniform highp float iGlobalTime;
+uniform lowp vec2 iResolution;
 
-float rand(vec2 co){
+lowp float rand(highp vec2 co){
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-float pallo(vec3 pos, vec3 coord, float r){
+highp float pallo(highp vec3 pos, highp vec3 coord, highp float r){
     return length(pos - coord) - r;
 }
 
-float scene(vec3 pos){
+highp float scene(highp vec3 pos){
     return min(
         pallo(pos, vec3(0.0, 0.0, (sin(iGlobalTime / 2.0) * 1.5 + 2.0)), 0.8),
         min(
@@ -42,10 +42,10 @@ float scene(vec3 pos){
     );
 }
 
-float march(vec3 dir, vec3 cam){
-    vec3 curPos = cam;
-    for(int i=0; i<MARCH_PREC; i++){
-        float dist = scene(curPos);
+highp float march(highp vec3 dir, highp vec3 cam){
+    highp vec3 curPos = cam;
+    for(highp int i=0; i<MARCH_PREC; i++){
+        highp float dist = scene(curPos);
         curPos += dist * dir;
     }
     return length(curPos - cam);
@@ -54,12 +54,12 @@ float march(vec3 dir, vec3 cam){
 void main()
 {
 
-    float t = iGlobalTime;
-    vec2 uv = (gl_FragCoord.xy / iResolution.yy - vec2(0.5, 0.5));
-    vec3 ray = normalize(vec3(uv.x, uv.y, 1.0));
-    vec3 cam = vec3(0.0, 0.0, -3.0);
-    float lum = 0.8 / sqrt(march(ray, cam)) * mod(gl_FragCoord.y, 2.0);
-    float noise = (rand(uv + iGlobalTime) * 0.034);
+    highp float t = iGlobalTime;
+    highp vec2 uv = (gl_FragCoord.xy / iResolution.yy - vec2(0.5, 0.5));
+    highp vec3 ray = normalize(vec3(uv.x, uv.y, 1.0));
+    highp vec3 cam = vec3(0.0, 0.0, -3.0);
+    highp float lum = 0.8 / sqrt(march(ray, cam)) * mod(gl_FragCoord.y, 2.0);
+    lowp float noise = (rand(uv + iGlobalTime) * 0.034);
     gl_FragColor = vec4((lum * lum + noise), (lum + noise), (lum * 0.8 + noise), 0.4);     //Cyan
 //    vec3 rgbCol = vec3(lum + noise); gl_FragColor = vec4(rgbCol, 1.0);                     //B&W
 }

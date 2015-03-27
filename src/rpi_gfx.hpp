@@ -23,7 +23,9 @@ This file is part of esfragt.
 #include <iostream>
 #include <stdarg.h>
 #include <sys/time.h>
-#include "bcm_host.h"
+#ifndef ODROID
+    #include "bcm_host.h"
+#endif
 #include "EGL/egl.h"
 #include "EGL/eglext.h"
 #include "GLES2/gl2.h"

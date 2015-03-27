@@ -24,6 +24,7 @@ c(ic)
 
 }
 
+#ifndef ODROID
 void GfxEGLWindow::swapBuffers()
 {
     eglSwapBuffers(display, buffer);
@@ -138,3 +139,146 @@ bool GfxEGLWindow::createWindow(GLuint flags)
 
     return true;
 }
+
+#else
+
+void GfxEGLWindow::swapBuffers()
+{
+    eglSwapBuffers(display, surface);
+}
+
+// X11 related local variables
+static Display *x_display = NULL;
+
+bool GfxEGLWindow::createWindow(GLuint flags)
+{
+    EGLint attribList[] =
+    {
+        EGL_RED_SIZE,       5,
+        EGL_GREEN_SIZE,     6,
+        EGL_BLUE_SIZE,      5,
+        EGL_ALPHA_SIZE,     (flags & GFX_WINDOW_ALPHA) ? 8 : EGL_DONT_CARE,
+        EGL_DEPTH_SIZE,     (flags & GFX_WINDOW_DEPTH) ? 8 : EGL_DONT_CARE,
+        EGL_STENCIL_SIZE,   (flags & GFX_WINDOW_STENCIL) ? 8 : EGL_DONT_CARE,
+        EGL_SAMPLE_BUFFERS, (flags & GFX_WINDOW_MULTISAMPLE) ? 1 : 0,
+        EGL_NONE
+    };
+
+    /*
+    Confusing :)
+    I pretty much stole all of this EGL code somewhere :D
+    */
+    
+    Window root;
+    XSetWindowAttributes swa;
+    XSetWindowAttributes  xattr;
+    Atom wm_state;
+    XWMHints hints;
+    XEvent xev;
+    EGLConfig ecfg;
+    EGLint num_config;
+    Window win;
+
+    /*
+     * X11 native display initialization
+     */
+
+    x_display = XOpenDisplay(NULL);
+    if ( x_display == NULL ) {
+        return false;
+    }
+
+    root = DefaultRootWindow(x_display);
+
+    swa.event_mask  =  ExposureMask | PointerMotionMask | KeyPressMask;
+    win = XCreateWindow(
+               x_display, root,
+               0, 0, c->w, c->h, 0,
+               CopyFromParent, InputOutput,
+               CopyFromParent, CWEventMask,
+               &swa );
+
+    xattr.override_redirect = FALSE;
+    XChangeWindowAttributes ( x_display, win, CWOverrideRedirect, &xattr );
+
+    hints.input = TRUE;
+    hints.flags = InputHint;
+    XSetWMHints(x_display, win, &hints);
+
+    // make the window visible on the screen
+    XMapWindow (x_display, win);
+    XStoreName (x_display, win, "esfragt test"); //WIN NAME
+
+    // get identifiers for the provided atom name strings
+    wm_state = XInternAtom (x_display, "_NET_WM_STATE", FALSE);
+
+    memset ( &xev, 0, sizeof(xev) );
+    xev.type                 = ClientMessage;
+    xev.xclient.window       = win;
+    xev.xclient.message_type = wm_state;
+    xev.xclient.format       = 32;
+    xev.xclient.data.l[0]    = 1;
+    xev.xclient.data.l[1]    = FALSE;
+    XSendEvent (
+       x_display,
+       DefaultRootWindow ( x_display ),
+       FALSE,
+       SubstructureNotifyMask,
+       &xev );
+    
+    //hWnd = (EGLNativeWindowType) win;
+    
+   EGLint numConfigs;
+   EGLint majorVersion;
+   EGLint minorVersion;
+   //EGLDisplay display;
+   //EGLContext context;
+   //EGLSurface surface;
+   EGLConfig config;
+   EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE, EGL_NONE };
+
+   // Get Display
+   display = eglGetDisplay((EGLNativeDisplayType)x_display);
+   if ( display == EGL_NO_DISPLAY ) {
+      return false;
+   }
+
+   // Initialize EGL
+   if ( !eglInitialize(display, &majorVersion, &minorVersion) ) {
+      return false;
+   }
+
+   // Get configs
+   if ( !eglGetConfigs(display, NULL, 0, &numConfigs) ) {
+      return false;
+   }
+
+   // Choose config
+   if ( !eglChooseConfig(display, attribList, &config, 1, &numConfigs) ) {
+      return false;
+   }
+
+   // Create a surface
+   surface = eglCreateWindowSurface(display, config, (EGLNativeWindowType)win, NULL);
+   if ( surface == EGL_NO_SURFACE ) {
+      return false;
+   }
+
+   // Create a GL context
+   context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttribs );
+   if ( context == EGL_NO_CONTEXT ) {
+      return false;
+   }   
+   
+   // Make the context current
+   if ( !eglMakeCurrent(display, surface, surface, context) ) {
+      return false;
+   }
+   
+   /*eglDisplay = display;
+   *eglSurface = surface;
+   *eglContext = context;*/
+   return true;
+}
+
+#endif

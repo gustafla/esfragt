@@ -25,6 +25,7 @@ c(ic)
 }
 
 #ifndef USE_X
+
 void GfxEGLWindow::swapBuffers()
 {
     eglSwapBuffers(display, buffer);
@@ -227,6 +228,7 @@ bool GfxEGLWindow::createWindow(GLuint flags)
        &xev );
     
     //hWnd = (EGLNativeWindowType) win;
+   xdisplay = win;
     
    EGLint numConfigs;
    EGLint majorVersion;

@@ -46,7 +46,7 @@ t(it) {
 
     check();
 
-    iChannel0 = new GfxTexture2D(NULL, res[0], res[1], 0, GL_RGBA, GL_LINEAR, GL_CLAMP_TO_EDGE);
+    iChannel0 = new GfxTexture2D(NULL, res[0], res[1], 0, GL_RGBA, GL_LINEAR, GL_REPEAT);
     glUniform1i(shaderProgram.getUfmHandle("iChannel0"), 0);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, iChannel0->getHandle(), 0);

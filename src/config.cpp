@@ -189,9 +189,10 @@ imgs(0)
             }
             w = actualW;
             h = actualH;
+        #else
+            w = 640;
+            h = 480;
         #endif
-        w = 640;
-        h = 480;
     }
 
     h /= stretch;

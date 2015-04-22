@@ -228,7 +228,7 @@ bool GfxEGLWindow::createWindow(GLuint flags)
        &xev );
     
     //hWnd = (EGLNativeWindowType) win;
-   xdisplay = win;
+   //xdisplay = win;
     
    EGLint numConfigs;
    EGLint majorVersion;

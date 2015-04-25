@@ -33,7 +33,7 @@ public:
     int x, y;
     float stretch;
 
-    std::string inames[4];
+    std::string inames[8];
     unsigned short imgs;
 
     bool devmode;

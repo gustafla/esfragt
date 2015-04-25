@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     if (!loadFile(c.fsName, *fsTemp))
         exit(40);
     GfxShader shaderProgram;
-    if(shaderProgram.compProgram(SIMPLE_VS, *fsTemp) == GL_FALSE)
+    if(shaderProgram.compProgram(SIMPLE_VS, fsTemp->c_str()) == GL_FALSE)
         exit(1);
     delete fsTemp;
 

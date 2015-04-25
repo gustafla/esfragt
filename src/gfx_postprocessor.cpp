@@ -27,7 +27,7 @@ t(it) {
     std::string* fsTemp = new std::string;
     if (!loadFile(fs, *fsTemp))
         exit(40);
-    if(shaderProgram.compProgram(SIMPLE_VS, *fsTemp) == GL_FALSE)
+    if(shaderProgram.compProgram(SIMPLE_VS, fsTemp->c_str()) == GL_FALSE)
         exit(1);
     delete fsTemp;
     glUseProgram(shaderProgram.getHandle());

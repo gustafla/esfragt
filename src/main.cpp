@@ -126,7 +126,9 @@ int main(int argc, char *argv[])
     for (;;)
     {
         check();
-        
+        #ifdef USE_X
+			glClear(GL_COLOR_BUFFER_BIT);
+		#endif
         glUseProgram(shaderProgram.getHandle());
         if (pp) {
             pp->bindFramebuffer();

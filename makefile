@@ -22,6 +22,9 @@ default:
 xwin:
 	cd src; make xwin
 
+sdlwin:
+	cd src; make sdlwin
+
 clean:
 	cd src; make clean
 

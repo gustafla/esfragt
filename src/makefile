@@ -24,23 +24,31 @@ xwin:TARGET=../esfragt.xwin
 OBJS=$(SRCS:.cpp=.o)
 CFLAGS+=-O3 -fomit-frame-pointer -MMD -MP
 xwin:CFLAGS=-O3 -fomit-frame-pointer -DUSE_X -MMD -MP
+sdlwin:CFLAGS=-O3 -fomit-frame-pointer -DUSE_SDL -MMD -MP
 debug:CFLAGS=-g
 INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
 xwin:INCLUDES=
+sdlwin:INCLUDES=
 LFLAGS=-L/opt/vc/lib/ -L/opt/vc/src/hello_pi/lib/ilclient -L/opt/vc/src/hello_pi/lib/vgfont
 xwin:LFLAGS=
+sdlwin:LFLAGS=
 LIBS=-lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt
 xwin:LIBS=-lGLESv2 -lEGL -lpthread -lX11
+sdlwin:LIBS=-lGLESv2 -lSDL -lpthread
 LIBS_CUSTOM =
 CC=g++
 
 all: $(TARGET)
-	@echo "Finished."
 	strip --strip-all $(TARGET)
+	@echo "Finished."
 	
 xwin: $(TARGET)
-	@echo "Finished."
 	strip --strip-all $(TARGET)
+	@echo "Finished."
+	
+sdlwin: $(TARGET)
+	strip --strip-all $(TARGET)
+	@echo "Finished."
 
 debug: $(TARGET)
 	@echo "Finished"

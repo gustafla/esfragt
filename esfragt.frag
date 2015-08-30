@@ -16,7 +16,9 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-precision highp float;
+#ifdef GL_ES
+	precision highp float;
+#endif
 
 uniform float iGlobalTime;
 uniform vec2 iResolution;

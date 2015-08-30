@@ -22,6 +22,9 @@ This file is part of esfragt.
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
+#ifdef USE_SDL
+	#include <SDL/SDL.h>
+#endif
 
 Config::Config(int argc, char* argv[]):
 fsName("esfragt.frag"),
@@ -35,6 +38,7 @@ prepend(false),
 fpsCounter(false),
 swInterval0(false),
 clearPp(true),
+fullscreen(false),
 ppName(""),
 fpsIn(100),
 resetTime(0.0),
@@ -167,20 +171,33 @@ imgs(0)
                                                                                 }
                                                                             }
                                                                         }
-                                                                        else if (!gotName)
-                                                                        {
-                                                                            fsName = argv[n];
-                                                                            gotName = true;
-                                                                        }
-                                                                            else
-                                                                            {
-                                                                                std::cout << "Unexpected parameter " << argv[n] << std::endl;
-                                                                                std::cout << ARGERR;
-                                                                                exit(5);
-                                                                            }
+																			else if (!strcmp(argv[n], "--fullscreen"))
+																			{
+																				fullscreen = true;
+																			}
+																				else if (!gotName)
+																				{
+																					fsName = argv[n];
+																					gotName = true;
+																				}
+																					else
+																					{
+																						std::cout << "Unexpected parameter " << argv[n] << std::endl;
+																						std::cout << ARGERR;
+																						exit(5);
+																					}
     }
     if (useAuto) {
-        #ifndef USE_X
+        #ifdef USE_X
+			w = 640;
+            h = 480;
+        #else
+		#ifdef USE_SDL
+			SDL_Surface* current;
+			current = SDL_SetVideoMode(0, 0, 24, SDL_FULLSCREEN); 
+			w = current->w;
+			h = current->h;
+		#else
             int errDisp;
             uint32_t actualW, actualH;
             if ((errDisp = graphics_get_display_size(0, &actualW, &actualH)) < 0) {
@@ -189,9 +206,7 @@ imgs(0)
             }
             w = actualW;
             h = actualH;
-        #else
-            w = 640;
-            h = 480;
+        #endif
         #endif
     }
 

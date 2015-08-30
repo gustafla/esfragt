@@ -19,27 +19,7 @@ This file is part of esfragt.
 #ifndef GFX_EGL_WINDOW_HPP
 #define GFX_EGL_WINDOW_HPP
 
-#ifndef USE_X
-#include "config.hpp"
-#include "rpi_gfx.hpp"
-#include <string>
-
-class GfxEGLWindow
-{
-public:
-    GfxEGLWindow(Config* ic);
-    void swapBuffers();
-    bool createWindow(GLuint flags);
-
-protected:
-
-    Config* c;
-    EGLNativeWindowType window;
-    EGLDisplay display;
-    EGLContext context;
-    EGLSurface buffer;
-};
-#else
+#ifdef USE_X
 
 #include "config.hpp"
 #include "rpi_gfx.hpp"
@@ -71,5 +51,51 @@ protected:
     EGLContext context;
     EGLSurface surface;
 };
+
+#else
+#ifdef USE_SDL
+
+#include <SDL/SDL.h>
+#include "config.hpp"
+#include "rpi_gfx.hpp"
+#include <string>
+
+class GfxEGLWindow
+{
+public:
+    GfxEGLWindow(Config* ic);
+    void swapBuffers();
+    bool createWindow(GLuint flags);
+
+protected:
+
+    Config* c;
+    SDL_Event events;
+};
+
+#else
+
+#include "config.hpp"
+#include "rpi_gfx.hpp"
+#include <string>
+
+class GfxEGLWindow
+{
+public:
+    GfxEGLWindow(Config* ic);
+    void swapBuffers();
+    bool createWindow(GLuint flags);
+
+protected:
+
+    Config* c;
+    EGLNativeWindowType window;
+    EGLDisplay display;
+    EGLContext context;
+    EGLSurface buffer;
+};
+
 #endif
+#endif
+
 #endif

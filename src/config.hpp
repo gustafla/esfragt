@@ -43,6 +43,7 @@ public:
     bool clearPp;
     unsigned short fpsIn;
     float resetTime;
+    bool fullscreen;
 };
 
 #endif

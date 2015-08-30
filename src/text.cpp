@@ -30,7 +30,7 @@ const std::string UNIFORMS = "uniform vec2 iResolution; "
                              "uniform sampler2D iChannel6; "
                              "uniform sampler2D iChannel7; ";
 
-const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 2.0.5\n"
+const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 2.1\n"
                             "Copyright 2014, 2015 Lauri Gustafsson.\n\n"
                             
                             "esfragt is free software: you can redistribute it and/or modify\n"
@@ -76,6 +76,7 @@ const std::string DOC = "Usage: esfragt [OPTION]... FILE\n"
                         "                    if primary shader returns transparent pixels.\n"
                         "  -r                Reset iGlobalTime when it reaches n seconds\n"
                         "                    (default 3600)\n"
+                        "  --fullscreen      Start fullscreen (only for SDL builds)\n"
                         "      --help        display this help and exit\n"
                         "      --version     display version information and exit\n"
                         "\n"

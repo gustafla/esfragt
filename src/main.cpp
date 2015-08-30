@@ -39,7 +39,15 @@ This file is part of esfragt.
 int main(int argc, char *argv[])
 {
     #ifndef USE_X
-        bcm_host_init();
+		#ifndef USE_SDL
+			bcm_host_init();
+		#else
+			int err;
+			if ((err=SDL_Init(SDL_INIT_EVERYTHING)) < 0) {
+				std::cout << "SDL_Init() failed.\n";
+				exit(err);
+			}
+		#endif
     #endif
     Config c(argc, argv);
     GfxEGLWindow window(&c);
@@ -123,7 +131,7 @@ int main(int argc, char *argv[])
 
     glReleaseShaderCompiler();
 
-    for (;;)
+    for(;;)
     {
         check();
         #ifdef USE_X
@@ -158,7 +166,8 @@ int main(int argc, char *argv[])
             pp->draw();
         }
         window.swapBuffers();
-
+        glClear(GL_COLOR_BUFFER_BIT);
+        
         if (pp)
             glClear(GL_COLOR_BUFFER_BIT);
 

@@ -16,7 +16,6 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
 #include <cstdlib>
 #include <string>
 #include <fstream>
@@ -24,7 +23,9 @@ This file is part of esfragt.
 #include <stdarg.h>
 #include <sys/time.h>
 #ifndef USE_X
-    #include "bcm_host.h"
+	#ifndef USE_SDL
+		#include "bcm_host.h"
+	#endif
 #endif
 #include "EGL/egl.h"
 #include "EGL/eglext.h"

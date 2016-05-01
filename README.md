@@ -15,7 +15,7 @@ Or for the Raspberry Pi:
     $ cd src/  
     $ ./build.sh raspi
 
-The point of the build.sh script is to remove my dev symlink to lib3dapp and download an actual copy from github.  
+The purpose of the build.sh script is to download lib3dapp from github.  
 You can do it manually as well and then run make.
 
 Copyright 2014-2016 Lauri Gustafsson.  

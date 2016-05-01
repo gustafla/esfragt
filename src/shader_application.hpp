@@ -1,4 +1,4 @@
-// Copyright 2014, 2015 Lauri Gustafsson
+// Copyright 2014-2016 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -16,34 +16,29 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#pragma once
 
-#include <string>
-#include "rpi_gfx.hpp"
+#include "window.hpp"
+#include "application.hpp"
+#include "application_config.hpp"
+#include "program.hpp"
+#include "scaling_rectangle.hpp"
+#include "framebuffer.hpp"
+#include "texture.hpp"
 
-class Config
-{
-public:
-    Config(int argc, char* argv[]);
-
-    std::string fsName;
-    std::string ppName;
-    int w, h;
-    int x, y;
-    float stretch;
-
-    std::string inames[8];
-    unsigned short imgs;
-
-    bool devmode;
-    bool prepend;
-    bool fpsCounter;
-    bool swInterval0;
-    bool clearPp;
-    unsigned short fpsIn;
-    float resetTime;
-    bool fullscreen;
+class ShaderApplication: public Application {
+    public:
+        ShaderApplication(Window& win, ApplicationConfig& conf);
+        ~ShaderApplication();
+        virtual void draw();
+    
+    private:
+        Program shader;
+        ApplicationConfig& config;
+        Program SHScaler;
+        Program* SHPost;
+        ScalingRectangle SCRectScaler;
+        Framebuffer FBScaler;
+        Framebuffer FBPost;
+        Texture** textures;
 };
-
-#endif

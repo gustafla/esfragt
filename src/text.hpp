@@ -1,4 +1,4 @@
-// Copyright 2014, 2015 Lauri Gustafsson
+// Copyright 2014-2016 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -16,15 +16,13 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef VERSION_HPP
-#define VERSION_HPP
+#pragma once
 
 #include <string>
 
 extern const std::string UNIFORMS;
 extern const std::string VERSION;
-extern const std::string ARGERR;
 extern const std::string DOC;
 extern const std::string SIMPLE_VS;
-
-#endif
+extern const std::string SIMPLE_VS_TEXVAR;
+extern const std::string SIMPLE_FS;

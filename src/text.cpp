@@ -1,4 +1,4 @@
-// Copyright 2014, 2015 Lauri Gustafsson
+// Copyright 2014-2016 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -30,8 +30,8 @@ const std::string UNIFORMS = "uniform vec2 iResolution; "
                              "uniform sampler2D iChannel6; "
                              "uniform sampler2D iChannel7; ";
 
-const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 2.1\n"
-                            "Copyright 2014, 2015 Lauri Gustafsson.\n\n"
+const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 3.0.0\n"
+                            "Copyright 2014-2016 Lauri Gustafsson.\n\n"
                             
                             "esfragt is free software: you can redistribute it and/or modify\n"
                             "it under the terms of the GNU General Public License as published by\n"
@@ -46,37 +46,21 @@ const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 2.1\n"
                             "You should have received a copy of the GNU General Public License\n"
                             "along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.\n";
 
-const std::string ARGERR = "Go fix your parameters.\n"
-                           "Try 'esfragt --help' for more information.\n";
-
 const std::string DOC = "Usage: esfragt [OPTION]... FILE\n"
                         "Load and run a GLSL fragment shader source.\n"
                         "\n"
-                        "  -a                set window size to display 0 size (automatic resolution)\n"
                         "  -w                window width\n"
                         "  -h                window height\n"
-                        "  -x                window x position (upper left corner)\n"
-                        "  -y                window y position (upper left corner)\n"
-                        "  -s                window width and height, a square\n"
-                        "  -c                divide backbuffer size by n, prone to rounding error\n"
-                        "  -f                print out a FPS reading after every n frame(s)\n"
-                        "                    (default 100)\n"
-                        "  -v                set eglSwapInterval to 0. Removes fps limit and disables \"vsync\"?\n"
-                        "  -d                enable alpha blending with window background\n"
-                        "  -u                prepend all uniforms to FILE\n"
-                        "                    (first line can't be a preprocessor instruction,\n"
-                        "                    recommended leaving it empty)\n"
+                        "  -x                internal width\n"
+                        "  -y                internal height\n"
+                        "  -f                print out an FPS reading after every n second(s)\n"
+                        "                    (default 2)\n"
+                        "  -d                window alpha (default 1.0)\n"
                         "  -i                specify an image file, only TGA supported\n"
                         "                    order of parameter decides iChannelX number\n"
                         "  -p                also run a post processing shader file.\n"
                         "                    \"iChannel0\" is frame input.\n"
-                        "                    (some alpha things are weird with this, have your\n"
-                        "                    post processor shader return just opaque pixels to be sure)\n"
-                        "  -m                disable post processor color clearing, gives a \"blurry\" feedback\n"
-                        "                    if primary shader returns transparent pixels.\n"
-                        "  -r                Reset iGlobalTime when it reaches n seconds\n"
-                        "                    (default 3600)\n"
-                        "  --fullscreen      Start fullscreen (only for SDL builds)\n"
+                        "  --fullscreen      Start fullscreen\n"
                         "      --help        display this help and exit\n"
                         "      --version     display version information and exit\n"
                         "\n"
@@ -93,4 +77,20 @@ const std::string DOC = "Usage: esfragt [OPTION]... FILE\n"
                         "You can report bugs or send mail/spam/\"offers\" to luutifa@gmail.com\n"
                         "esfragt home page: <http://luutifa.tk/esfragt/>\n";
 
-const std::string SIMPLE_VS = "attribute vec4 v;\nvoid main(){gl_Position=v;}\n";
+const std::string SIMPLE_VS = "attribute vec3 a_position;\n"
+                              "attribute vec3 a_normal;\n"
+                              "attribute vec2 a_texpos;\n"
+                              "void main(){gl_Position=vec4(a_position,1.0);}\n";
+                              
+const std::string SIMPLE_VS_TEXVAR = "attribute vec3 a_position;\n"
+                                     "attribute vec3 a_normal;\n"
+                                     "attribute vec2 a_texcoord;\n"
+                                     "varying vec2 v_texcoord;\n"
+                                     "void main(){\n"
+                                     "v_texcoord=a_texcoord;\n"
+                                     "gl_Position=vec4(a_position,1.0);}\n";
+                              
+const std::string SIMPLE_FS = "varying vec2 v_texcoord;\n"
+                              "uniform sampler2D iChannel0;\n"
+                              "void main(){\n"
+                              "gl_FragColor=texture2D(iChannel0,v_texcoord);}\n";

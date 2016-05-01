@@ -1,4 +1,4 @@
-# Copyright 2014, 2015 Lauri Gustafsson
+# Copyright 2014-2016 Lauri Gustafsson
 #
 # This file is part of esfragt.
 #
@@ -18,35 +18,25 @@
 
 # A makefile to build esfragt.
 
-SRCS=rpi_gfx.cpp main.cpp util.cpp config.cpp text.cpp gfx_EGL_window.cpp gfx_shader.cpp gfx_texture_2D.cpp tga_file.cpp gfx_postprocessor.cpp
-TARGET=../esfragt
-xwin:TARGET=../esfragt.xwin
+SRCS=$(wildcard *.cpp)
 OBJS=$(SRCS:.cpp=.o)
-CFLAGS+=-O3 -fomit-frame-pointer -MMD -MP
-xwin:CFLAGS=-O3 -fomit-frame-pointer -DUSE_X -MMD -MP
-sdlwin:CFLAGS=-O3 -fomit-frame-pointer -DUSE_SDL -MMD -MP
+TARGET=esfragt
+CFLAGS+=-O3 -MMD -MP
 debug:CFLAGS=-g
-INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
-xwin:INCLUDES=
-sdlwin:INCLUDES=
-LFLAGS=-L/opt/vc/lib/ -L/opt/vc/src/hello_pi/lib/ilclient -L/opt/vc/src/hello_pi/lib/vgfont
-xwin:LFLAGS=
-sdlwin:LFLAGS=
-LIBS=-lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt
-xwin:LIBS=-lGLESv2 -lEGL -lpthread -lX11
-sdlwin:LIBS=-lGLESv2 -lSDL -lpthread
-LIBS_CUSTOM =
+raspi:CFLAGS+=-DRASPI_BUILD
+INCLUDES=-I./lib3dapp/
+raspi:INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
+LFLAGS=-L./lib3dapp/
+raspi:LFLAGS+=-L/opt/vc/lib/
+LIBS=-lGL -lSDL2 -lGLEW -l3dapp
+raspi:LIBS=-lGLESv2 -lEGL -lbcm_host -lSDL -l3dapp
 CC=g++
 
-all: $(TARGET)
+default: $(TARGET)
 	strip --strip-all $(TARGET)
 	@echo "Finished."
-	
-xwin: $(TARGET)
-	strip --strip-all $(TARGET)
-	@echo "Finished."
-	
-sdlwin: $(TARGET)
+
+raspi: $(TARGET)
 	strip --strip-all $(TARGET)
 	@echo "Finished."
 
@@ -54,14 +44,17 @@ debug: $(TARGET)
 	@echo "Finished"
 
 $(TARGET): $(OBJS)
+	cd lib3dapp; $(MAKE) $(MAKECMDGOALS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET) $(OBJS) $(LFLAGS) $(LIBS) $(LIBS_CUSTOM)
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
+	
 clean:
-	rm -f *.o *.d *~ $(TARGET)
-	rm -f $(TARGET).xwin
+	cd lib3dapp; $(MAKE) clean
+	find ./ -type f -name "*.o" -delete
+	find ./ -type f -name "*.d" -delete
+	rm -f $(TARGET)
 
 install: $(TARGET)
 	cp $(TARGET) /usr/local/bin/

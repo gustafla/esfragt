@@ -1,4 +1,4 @@
-// Copyright 2014, 2015 Lauri Gustafsson
+// Copyright 2014-2016 Lauri Gustafsson
 /*
 This file is part of esfragt.
 
@@ -16,15 +16,24 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#pragma once
 
 #include <string>
+#include <vector>
+#include "config.hpp"
 
-bool isdigits(std::string &s);
-bool isfloat(std::string &s);
-void checkValueParam(int n, int argc, char* argv[]);
-void checkValueParamf(int n, int argc, char* argv[]);
-bool loadFile(std::string inFileName, std::string& outString, int linesize=4096);
+class ApplicationConfig: public Config {
+    public:
+        ApplicationConfig(int argc, char* argv[]);
+    
+        std::string fsName;
+        std::string ppName;
+        float internalW, internalH;
+    
+        std::vector<std::string> inames;
+    
+        bool fpsCounter;
+        float fpsCounterInterval;
+        float alpha;
+};
 
-#endif

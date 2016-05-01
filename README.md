@@ -6,12 +6,17 @@ See --help (or src/text.cpp) for help.
 --version for other info.
 
 To build:  
-    $ make  
+    $ cd src/  
+    $ ./build.sh  
     $ sudo make install (optional, copies esfragt to /usr/local/bin)  
     And do what you want with the binary.  
 
 Or for the Raspberry Pi:  
-    $ make raspi  
+    $ cd src/  
+    $ ./build.sh raspi
+
+The point of the build.sh script is to remove my dev symlink to lib3dapp and download an actual copy from github.  
+You can do it manually as well and then run make.
 
 Copyright 2014-2016 Lauri Gustafsson.  
 Released GNU GPLv3+, see COPYING.

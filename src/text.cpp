@@ -30,7 +30,7 @@ const std::string UNIFORMS = "uniform vec2 iResolution; "
                              "uniform sampler2D iChannel6; "
                              "uniform sampler2D iChannel7; ";
 
-const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 3.0.0\n"
+const std::string VERSION = "GL ES Fragment Shader Thingy - esfragt 3.0.1\n"
                             "Copyright 2014-2016 Lauri Gustafsson.\n\n"
                             
                             "esfragt is free software: you can redistribute it and/or modify\n"

@@ -30,7 +30,7 @@ void cleanup() {
 int main(int argc, char* argv[]) {
     initializeGraphics();
     atexit(cleanup);
-    
+
     ApplicationConfig conf(argc, argv);
     std::string cap = "esfragt | ";
     cap += conf.fsName;

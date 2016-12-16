@@ -51,7 +51,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	
 clean:
-	cd lib3dapp; $(MAKE) clean
+	cd lib3dapp/src; $(MAKE) clean
 	find ./ -type f -name "*.o" -delete
 	find ./ -type f -name "*.d" -delete
 	rm -f $(TARGET)

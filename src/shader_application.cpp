@@ -17,9 +17,9 @@ This file is part of esfragt.
 */
 
 #include "shader_application.hpp"
-#include "geo_primitives.hpp"
+#include "3dapp_geo_primitives.hpp"
 #include "text.hpp"
-#include "tga_file.hpp"
+#include "3dapp_tga_file.hpp"
 #include <string>
 #include <cstring>
 

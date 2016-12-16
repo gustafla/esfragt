@@ -20,7 +20,7 @@ This file is part of esfragt.
 
 #include <string>
 #include <vector>
-#include "config.hpp"
+#include "3dapp_config.hpp"
 
 class ApplicationConfig: public Config {
     public:

@@ -18,13 +18,13 @@ This file is part of esfragt.
 
 #pragma once
 
-#include "window.hpp"
-#include "application.hpp"
+#include "3dapp_window.hpp"
+#include "3dapp_application.hpp"
 #include "application_config.hpp"
-#include "program.hpp"
-#include "scaling_rectangle.hpp"
-#include "framebuffer.hpp"
-#include "texture.hpp"
+#include "3dapp_program.hpp"
+#include "3dapp_scaling_rectangle.hpp"
+#include "3dapp_framebuffer.hpp"
+#include "3dapp_texture.hpp"
 
 class ShaderApplication: public Application {
     public:

@@ -16,9 +16,9 @@ This file is part of esfragt.
     along with esfragt, see COPYING. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "graphics.hpp"
+#include "3dapp_graphics.hpp"
 #include "application_config.hpp"
-#include "window.hpp"
+#include "3dapp_window.hpp"
 #include "shader_application.hpp"
 #include <string>
 #include <iostream>

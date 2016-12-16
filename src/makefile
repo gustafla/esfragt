@@ -24,9 +24,9 @@ TARGET=esfragt
 CFLAGS+=-O3 -MMD -MP
 debug:CFLAGS=-g
 raspi:CFLAGS+=-DRASPI_BUILD
-INCLUDES=-I./lib3dapp/
+INCLUDES=-I./lib3dapp/src/include
 raspi:INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I/opt/vc/src/hello_pi/libs/ilclient -I/opt/vc/src/hello_pi/libs/vgfont
-LFLAGS=-L./lib3dapp/
+LFLAGS=-L./lib3dapp/src/
 raspi:LFLAGS+=-L/opt/vc/lib/
 LIBS=-lGL -lSDL2 -lGLEW -l3dapp
 raspi:LIBS=-lGLESv2 -lEGL -lbcm_host -lSDL -l3dapp
@@ -44,7 +44,7 @@ debug: $(TARGET)
 	@echo "Finished"
 
 $(TARGET): $(OBJS)
-	cd lib3dapp; $(MAKE) $(MAKECMDGOALS)
+	cd lib3dapp/src; $(MAKE) $(MAKECMDGOALS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET) $(OBJS) $(LFLAGS) $(LIBS) $(LIBS_CUSTOM)
 
 .cpp.o:

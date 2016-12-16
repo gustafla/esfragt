@@ -21,8 +21,8 @@ This file is part of esfragt.
 #include <cstdlib>
 #include <iostream>
 #include "text.hpp"
-#include "util.hpp"
-#include "define.hpp"
+#include "3dapp_util.hpp"
+#include "3dapp_consts.hpp"
 
 ApplicationConfig::ApplicationConfig(int argc, char* argv[]):
 Config(argc, argv),

@@ -26,19 +26,19 @@ This file is part of esfragt.
 #include "3dapp_framebuffer.hpp"
 #include "3dapp_texture.hpp"
 
-class ShaderApplication: public Application {
+class ShaderApplication: public Lib3dapp::Application {
     public:
-        ShaderApplication(Window& win, ApplicationConfig& conf);
+        ShaderApplication(Lib3dapp::Window& win, ApplicationConfig& conf);
         ~ShaderApplication();
         virtual void draw();
     
     private:
-        Program shader;
+        Lib3dapp::Program shader;
         ApplicationConfig& config;
-        Program SHScaler;
-        Program* SHPost;
-        ScalingRectangle SCRectScaler;
-        Framebuffer FBScaler;
-        Framebuffer FBPost;
-        Texture** textures;
+        Lib3dapp::Program SHScaler;
+        Lib3dapp::Program* SHPost;
+        Lib3dapp::ScalingRectangle SCRectScaler;
+        Lib3dapp::Framebuffer FBScaler;
+        Lib3dapp::Framebuffer FBPost;
+        Lib3dapp::Texture** textures;
 };

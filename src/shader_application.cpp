@@ -23,6 +23,8 @@ This file is part of esfragt.
 #include <string>
 #include <cstring>
 
+using namespace Lib3dapp;
+
 void setEsfragtTextureUniforms(Program& shader, unsigned int n) {
     shader.use();
     char tmpNum[8];

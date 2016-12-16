@@ -23,6 +23,8 @@ This file is part of esfragt.
 #include <string>
 #include <iostream>
 
+using namespace Lib3dapp;
+
 void cleanup() {
     cleanupGraphics();
 }

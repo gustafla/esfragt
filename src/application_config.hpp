@@ -22,7 +22,7 @@ This file is part of esfragt.
 #include <vector>
 #include "3dapp_config.hpp"
 
-class ApplicationConfig: public Config {
+class ApplicationConfig: public Lib3dapp::Config {
     public:
         ApplicationConfig(int argc, char* argv[]);
     

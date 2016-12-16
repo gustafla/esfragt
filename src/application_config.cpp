@@ -24,6 +24,8 @@ This file is part of esfragt.
 #include "3dapp_util.hpp"
 #include "3dapp_consts.hpp"
 
+using namespace Lib3dapp;
+
 ApplicationConfig::ApplicationConfig(int argc, char* argv[]):
 Config(argc, argv),
 alpha(1.0f),
